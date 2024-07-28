@@ -30,4 +30,10 @@ public class CommonUtilities {
 
     public static final Consumer<String> removeOtpFromStore
             = username -> otpStore.remove(username);
+
+    public static final Function<String, String> userTypeToRoleCovert =
+            (userType) -> {
+                userType = userType.toUpperCase();
+                return "ROLE_" + userType;
+            };
 }

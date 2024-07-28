@@ -12,6 +12,7 @@ import com.sms.demo.utils.CommonUtilities;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Map;
@@ -46,22 +47,31 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public boolean isAccountAlreadyRegistered(String username) {
+
         return userRepository.findByUsername(username).isPresent();
     }
 
-
     @Override
-    public UserDto registerNewUser(UserDto userDto, String userType) {
-        //inject default role -> user
+    public boolean isAccountAlreadyRegisteredWithRole(String username, String role) {
+        return userRepository.findByUsernameAndRole(username,role).isPresent();
+    }
+
+
+    @Transactional
+    @Override
+    public UserDto registerNewUser(UserDto userDto, String roleName) {
         Set<Role> roles = new HashSet<>();
-        userType = userType.toUpperCase();
-        String roleName = "ROLES_" + userType;
 
         Role existingRole = roleRepository.findByRoleName(roleName);
-        if (existingRole != null) {
-            roles.add(existingRole);
+        if (existingRole == null) {
+            existingRole = new Role();
+            existingRole.setRoleName(roleName);
+            existingRole = roleRepository.save(existingRole);
+            log.info("Created new role: {}", existingRole);
+        } else {
+            log.info("Found existing role: {}", existingRole);
         }
-
+        roles.add(existingRole);
         userDto.setRoles(roles);
         userDto.setEnabled(true);
 

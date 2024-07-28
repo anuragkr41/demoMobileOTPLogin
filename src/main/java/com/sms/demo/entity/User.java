@@ -16,8 +16,7 @@ import java.util.Set;
 public class User {
     @Id
     private String username;
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "User_Role",
             joinColumns = @JoinColumn(name = "username"),

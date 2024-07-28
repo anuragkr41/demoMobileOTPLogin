@@ -77,19 +77,16 @@ public class LoginController {
     @PostMapping("/register/{userType}")
     public ResponseEntity<UserDto> registerUser(
             @RequestBody UserRegistrationDto userRegistrationDto, @PathVariable String userType){
-
         String username = CommonUtilities.generateUsernameFromCountryCodeAndPhoneNo
                 .apply(userRegistrationDto.getCountryCode(), userRegistrationDto.getPhoneNumber());
+        String roleName = CommonUtilities.userTypeToRoleCovert.apply(userType);
 
-        boolean isRegistered = authenticationService.isAccountAlreadyRegistered(username);
+        boolean isRegistered = authenticationService.isAccountAlreadyRegisteredWithRole(username, roleName);
         if(isRegistered){
             throw new RuntimeException("Account already registered.");
         }
-//        UserDto dto = new UserDto();
         userRegistrationDto.setUsername(username);
-
-//        dto.setUsername(userRegistrationDto.getUsername());
-        UserDto userDto = authenticationService.registerNewUser(userRegistrationDto, userType);
+        UserDto userDto = authenticationService.registerNewUser(userRegistrationDto, roleName);
 
         return ResponseEntity.ok(userDto);
     }
