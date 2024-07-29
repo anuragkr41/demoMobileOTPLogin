@@ -4,7 +4,6 @@ import com.sms.demo.dto.request.LoginRequest;
 import com.sms.demo.dto.request.PreLoginRequest;
 import com.sms.demo.dto.request.UserDto;
 import com.sms.demo.dto.request.UserRegistrationDto;
-import com.sms.demo.entity.User;
 import com.sms.demo.repository.UserRepository;
 import com.sms.demo.service.AuthenticationService;
 import com.sms.demo.service.PictuUserService;
@@ -43,6 +42,7 @@ public class LoginController {
                 .apply(dto.getCountryCode(), dto.getPhoneNumber());
 
         //Check whether an account exist already for the username with the role as mentioned in dto
+
 
         boolean isRegistered = authenticationService.isAccountAlreadyRegistered(username);
         String response="";
