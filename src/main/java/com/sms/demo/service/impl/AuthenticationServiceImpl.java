@@ -40,6 +40,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     public String loginWithOtp(String username, String otp) {
         String otpStoredForUser = CommonUtilities.otpStore.get(username);
         if(otpStoredForUser.equals(otp)) {
+            CommonUtilities.removeOtpFromStore.accept(username);
             return "eygsdfgsdfgsdfg.sdfgsdfgsdfghanefdhsdfh.sdfgqergwbtrh";
         }
         return "Invalid OTP";
