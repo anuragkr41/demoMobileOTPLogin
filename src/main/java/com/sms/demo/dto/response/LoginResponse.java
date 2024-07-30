@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class SuccessfulLoginResponse {
+public class LoginResponse {
+    private String status;
     private String token;
 }

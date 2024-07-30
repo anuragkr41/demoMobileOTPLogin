@@ -33,6 +33,8 @@ public class JWTTokenGeneratorFilter extends OncePerRequestFilter {
          * @throws IOException
          */
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+
         if (null != authentication) {
             Environment env = getEnvironment();
             String secret = env.getProperty(AppConstants.JWT_SECRET_KEY,

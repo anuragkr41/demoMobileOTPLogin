@@ -4,6 +4,7 @@ import com.sms.demo.dto.request.LoginRequest;
 import com.sms.demo.dto.request.PreLoginRequest;
 import com.sms.demo.dto.request.UserDto;
 import com.sms.demo.dto.request.UserRegistrationDto;
+import com.sms.demo.dto.response.LoginResponse;
 import com.sms.demo.repository.UserRepository;
 import com.sms.demo.service.AuthenticationService;
 import com.sms.demo.service.PictuUserService;
@@ -52,26 +53,13 @@ public class LoginController {
         } else {
             log.debug("Trying to register new user");
         }
-
         return ResponseEntity.ok(response); // This line is also to be modified later
-
-//        try {
-//            User user = new User();
-//            user.setUsername(dto.getUsername());
-//            user.setEnabled(dto.isEnabled());
-//            user.setRole(dto.getRole());
-//            userRepository.save(user);
-//            return ResponseEntity.ok().body("User is saved");
-//        }catch (Exception e){
-//            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Exception Occured"+e.getMessage());
-//        }
-//        return ResponseEntity.ok("Process Completed");
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        String token = authenticationService.loginWithOtp(loginRequest.getUsername(), loginRequest.getOtp());
-        return ResponseEntity.ok(token);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        LoginResponse loginResponse = authenticationService.loginWithOtp(loginRequest);
+        return ResponseEntity.ok(loginResponse);
     }
 
     @PostMapping("/register/{userType}")
